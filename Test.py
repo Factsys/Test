@@ -37,7 +37,9 @@ async def on_ready():
     else:
         print("Bot user not available")
 
+
 # COMMANDS
+
 @bot.command()
 async def embed(ctx):
     embedmsg = discord.Embed(
@@ -55,25 +57,73 @@ async def embed(ctx):
     embedmsg.set_footer(text="fake", icon_url=ctx.author.avatar.url)
     await ctx.send(embed=embedmsg)
 
+
 @bot.command()
 async def read(ctx):
     await ctx.send(f"{ctx.author.mention} read here: https://www.wikihow.com/Teach-Yourself-to-Read")
+
 
 @bot.command()
 async def timestamps(ctx):
     now = int(datetime.datetime.now().timestamp())
     await ctx.send(f"Current time is: {now}")
 
+
 @bot.command()
 async def dateonly(ctx):
     date = datetime.datetime.utcnow().date()
     await ctx.send(f"Today's date: `{date}`")
+
 
 @bot.command()
 async def time(ctx):
     now = datetime.datetime.utcnow()
     timestamp = int(now.timestamp())
     await ctx.send(f"Current time: <t:{timestamp}:F>")
+
+
+@bot.command()
+async def date(ctx):
+    now = datetime.datetime.utcnow()
+    timestamp = int(now.timestamp())
+    
+    embed = discord.Embed(
+        title="🗓️ Current Date & Time",
+        color=discord.Color.blue()
+    )
+    
+    # Add different time formats that Discord will automatically convert to user's timezone
+    embed.add_field(
+        name="📅 Full Date & Time",
+        value=f"<t:{timestamp}:F>",
+        inline=False
+    )
+    
+    embed.add_field(
+        name="📆 Date Only",
+        value=f"<t:{timestamp}:D>",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="🕐 Time Only",
+        value=f"<t:{timestamp}:T>",
+        inline=True
+    )
+    
+    embed.add_field(
+        name="⏰ Relative Time",
+        value=f"<t:{timestamp}:R>",
+        inline=True
+    )
+    
+    embed.set_footer(
+        text="Times are automatically shown in your timezone",
+        icon_url=ctx.author.avatar.url if ctx.author.avatar else None
+    )
+    
+    await ctx.send(embed=embed)
+
 
 # Run the bot
 if __name__ == "__main__":
